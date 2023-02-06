@@ -1,0 +1,47 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <OutputPath>./nupkg</OutputPath>
+
+    <PackageType>Template</PackageType>
+    <PackageId>Chickensoft.GodotPackage</PackageId>
+    <PackageIcon>icon.png</PackageIcon>
+    <PackageTags>godot;c#;chickensoft;style;formatting;editorconfig</PackageTags>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageProjectUrl>https://github.com/chickensoft-games/GodotPackageTemplate</PackageProjectUrl>
+    <PackageAuthor>Chickensoft</PackageAuthor>
+
+    <Title>GodotPackage</Title>
+    <Version>1.0.0-beta.4.0.0.16</Version>
+    <Description>A .NET template for quickly creating a C# nuget package for use with Godot 4.</Description>
+    <Copyright>© 2023 Chickensoft</Copyright>
+    <Company>Chickensoft</Company>
+
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/chickensoft-games/GodotPackageTemplate</RepositoryUrl>
+
+    <IncludeContentInPack>true</IncludeContentInPack>
+    <NoBuild>true</NoBuild>
+    <NoWarn>NU5128</NoWarn>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <IncludeBuildOutput>false</IncludeBuildOutput>
+    <ContentTargetFolders>content</ContentTargetFolders>
+    <NoDefaultExcludes>true</NoDefaultExcludes>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include=".template.config/template.json" Pack="true" PackagePath=".template.config/template.json" />
+    <Content Include="src/**/*" Pack="true" PackagePath="src" />
+    <!-- Some CI/CD files in the content aren't actually part of the template -->
+    <!-- They're only there to trigger this project to update. Let's ignore them.-->
+    <Content Remove="src/**/*.__template.yaml" />
+    <Content Remove="src/.git/" />
+    <None Include="icon.png" Pack="true" PackagePath="" />
+    <None Include="README.md" Pack="true" PackagePath="\" />
+    <None Include="LICENSE" Pack="true" PackagePath="\" />
+    <Compile Remove="**\*" />
+  </ItemGroup>
+
+</Project>
