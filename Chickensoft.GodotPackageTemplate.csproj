@@ -1,5 +1,4 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <OutputPath>./nupkg</OutputPath>
@@ -34,9 +33,6 @@
   <ItemGroup>
     <Content Include=".template.config/template.json" Pack="true" PackagePath=".template.config/template.json" />
     <Content Include="src/**/*" Pack="true" PackagePath="src" />
-    <!-- Some CI/CD files in the content aren't actually part of the template -->
-    <!-- They're only there to trigger this project to update. Let's ignore them.-->
-    <Content Remove="src/**/*.__template.yaml" />
     <Content Remove="src/.git/" />
     <None Include="icon.png" Pack="true" PackagePath="" />
     <None Include="README.md" Pack="true" PackagePath="\" />

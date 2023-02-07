@@ -1,10 +1,6 @@
 name: '📩 Self-Update'
 on:
   workflow_dispatch:
-    inputs:
-      version:
-        description: "Version (no 'v' prefix)"
-        required: true
 
 jobs:
   self_update:
@@ -21,19 +17,26 @@ jobs:
         run: |
           git pull --recurse-submodules
           git submodule update --remote --recursive
+      
+      - name: Get Submodule Project Version
+        id: project_version
+        uses: KageKirin/get-csproj-version@1.0.0
+        with:
+          regex: '(.*)'
+          file: src/Chickensoft.GodotPackage/Chickensoft.GodotPackage.csproj
 
       - name: '📝 Change Version'
         uses: Thundernerd/dotnet-project-version-updater@v1.2
         with:
-          file: "Chickensoft.GodotPackage/Chickensoft.GodotPackage.csproj"
-          version: ${{ github.event.inputs.version }}
+          file: "Chickensoft.GodotPackageTemplate.csproj"
+          version: ${{ steps.project_version.outputs.version }}
 
       - name: '⤴️ Create Pull Request'
         uses: peter-evans/create-pull-request@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          branch: version/${{ github.event.inputs.version }}
-          commit-message: update submodules and version to ${{ github.event.inputs.version }}
-          title: 'chore(project): update version to ${{ github.event.inputs.version }}'
+          branch: version/${{ steps.project_version.outputs.version }}
+          commit-message: update submodules and version to ${{ steps.project_version.outputs.version }}
+          title: 'chore(project): update version to ${{ steps.project_version.outputs.version }}'
           body: >
-            chore(project): update submodules and version to ${{ github.event.inputs.version }}.
+            chore(project): update submodules and version to ${{ steps.project_version.outputs.version }}.
