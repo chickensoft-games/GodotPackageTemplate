@@ -1,0 +1,23 @@
+name: '📦 Publish to Nuget'
+on:
+  workflow_dispatch:
+
+jobs:
+  publish:
+    name: '📦 Publish to Nuget'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        name: 🧾 Checkout
+
+      - uses: actions/setup-dotnet@v3
+        name: 💽 Setup .NET SDK
+        with:
+          global-json-file: src/global.json
+      
+      - name: 📦 Publish
+        id: publish_nuget
+        uses: brandedoutcast/publish-nuget@v2
+        with:
+          PROJECT_FILE_PATH: Chickensoft.GodotPackageTemplate.csproj
+          NUGET_KEY: ${{ secrets.NUGET_API_KEY }}
