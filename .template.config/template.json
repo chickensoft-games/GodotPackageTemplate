@@ -2,12 +2,8 @@
   "$schema": "http://json.schemastore.org/template",
   "author": "Chickensoft",
   "classifications": [
-    "Godot",
-    "C#",
-    "Package",
-    "Nuget",
-    "Template",
-    "Chickensoft"
+    "Chickensoft",
+    "Godot"
   ],
   "name": "Chickensoft Godot Package",
   "identity": "Chickensoft.GodotPackage",
