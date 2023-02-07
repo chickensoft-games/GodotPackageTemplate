@@ -20,7 +20,7 @@ jobs:
       
       - name: Get Submodule Project Version
         id: project_version
-        uses: KageKirin/get-csproj-version@1.0.0
+        uses: KageKirin/get-csproj-version@v1.0.0
         with:
           regex: '(.*)'
           file: src/Chickensoft.GodotPackage/Chickensoft.GodotPackage.csproj
