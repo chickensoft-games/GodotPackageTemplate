@@ -1,0 +1,39 @@
+name: '📩 Self-Update'
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version (no 'v' prefix)"
+        required: true
+
+jobs:
+  self_update:
+    name: '📩 Self-Update'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: '🧾 Checkout'
+        uses: actions/checkout@v3
+        with:
+          submodules: recursive
+
+      - name: Git Submodule Update
+        run: |
+          git pull --recurse-submodules
+          git submodule update --remote --recursive
+
+      - name: '📝 Change Version'
+        uses: Thundernerd/dotnet-project-version-updater@v1.2
+        with:
+          file: "Chickensoft.GodotPackage/Chickensoft.GodotPackage.csproj"
+          version: ${{ github.event.inputs.version }}
+
+      - name: '⤴️ Create Pull Request'
+        uses: peter-evans/create-pull-request@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: version/${{ github.event.inputs.version }}
+          commit-message: update submodules and version to ${{ github.event.inputs.version }}
+          title: 'chore(project): update version to ${{ github.event.inputs.version }}'
+          body: >
+            chore(project): update submodules and version to ${{ github.event.inputs.version }}.
