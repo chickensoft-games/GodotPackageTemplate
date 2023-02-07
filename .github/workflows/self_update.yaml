@@ -21,7 +21,7 @@ jobs:
       
       - name: '🤓 Determine Latest Version'
         id: project_version
-        uses: mavrosxristoforos/get-xml-info@1.0
+        uses: mavrosxristoforos/get-xml-info@1.1.1
         with:
           xml-file: 'src/Chickensoft.GodotPackage/Chickensoft.GodotPackage.csproj'
           xpath: '//PropertyGroup/Version'
