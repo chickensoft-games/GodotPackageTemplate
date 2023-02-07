@@ -7,8 +7,11 @@ jobs:
     name: '📦 Publish to Nuget'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-        name: 🧾 Checkout
+      - name: '🧾 Checkout'
+        uses: actions/checkout@v3
+        with:
+          submodules: 'recursive'
+          token: ${{ secrets.GH_BASIC }}
 
       - uses: actions/setup-dotnet@v3
         name: 💽 Setup .NET SDK
