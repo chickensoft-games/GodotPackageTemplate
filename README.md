@@ -6,7 +6,7 @@ A .NET template for quickly creating a C# nuget package for use with Godot 4.
 
 ```sh
 # Install this template
-dotnet new --install Chickensoft.GodotPackage::1.0.0 # or latest
+dotnet new --install Chickensoft.GodotPackage
 
 # Generate a new project based on this template
 dotnet new chickenpackage --name "MyPackageName" --param:author "My Name"
