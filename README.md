@@ -24,7 +24,7 @@ The [GodotPackage] template contents are built as an app themselves, allowing th
 [discord-badge]: https://raw.githubusercontent.com/chickensoft-games/chickensoft_site/main/static/img/badges/discord_badge.svg
 [discord]: https://discord.gg/gSjaPgMmYW
 [read-the-docs-badge]: https://raw.githubusercontent.com/chickensoft-games/chickensoft_site/main/static/img/badges/read_the_docs_badge.svg
-[docs]: https://chickensoft.games/docs/super_nodes
+[docs]: https://chickensoft.games/docs/
 
 <!-- Article -->
 [GodotPackage]: https://github.com/chickensoft-games/GodotPackage
