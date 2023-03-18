@@ -14,7 +14,9 @@ dotnet new chickenpackage --name "MyPackageName" --param:author "My Name"
 
 **NOTE:** This repository contains only the `dotnet new` template information and package description. The actual template contents are included as a git submodule from the [GodotPackage] repository.
 
-The [GodotPackage] template contents are built as an app themselves, allowing the template to be easily maintained and updated as if it were a project itself.
+The [GodotPackage] template contents are included as a submodule, since it is easier to verify changes to the template if it compiles and bundles into a package of its own.
+
+Microsoft has an article on [creating template packages][create-template-package].
 
 <!-- Links -->
 
@@ -28,3 +30,4 @@ The [GodotPackage] template contents are built as an app themselves, allowing th
 
 <!-- Article -->
 [GodotPackage]: https://github.com/chickensoft-games/GodotPackage
+[create-template-package]: https://learn.microsoft.com/en-us/dotnet/core/tutorials/cli-templates-create-template-package
