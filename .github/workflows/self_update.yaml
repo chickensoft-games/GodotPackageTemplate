@@ -66,8 +66,8 @@ jobs:
         uses: peter-evans/create-pull-request@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          branch: version/${{ github.event.inputs.version }}
-          commit-message: update submodules and version to ${{ github.event.inputs.version }}
-          title: 'chore(project): update version to ${{ github.event.inputs.version }}'
+          branch: version/${{ steps.next-version.outputs.version }}
+          commit-message: update submodules and version to ${{ steps.next-version.outputs.version }}
+          title: 'chore(project): update version to ${{ steps.next-version.outputs.version }}'
           body: >
-            chore(project): update submodules and version to ${{ github.event.inputs.version }}.
+            chore(project): update submodules and version to ${{ steps.next-version.outputs.version }}.
