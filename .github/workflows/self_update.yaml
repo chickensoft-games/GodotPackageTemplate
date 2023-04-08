@@ -1,5 +1,10 @@
 name: '📩 Self-Update'
 on:
+  schedule:
+    # See if there are changes to release once-per-day.
+    # Since our package template updates automatically, this ensures it will
+    # never be unreleased for more than a day.
+    - cron: 0 0 * * * # end of every day
   workflow_dispatch:
     inputs:
       bump:
@@ -16,6 +21,8 @@ jobs:
   self_update:
     name: '📩 Self-Update'
     runs-on: ubuntu-latest
+    outputs:
+      changed: ${{ steps.changes.outputs.changed }}
 
     steps:
       - name: '🧾 Checkout'
@@ -57,7 +64,7 @@ jobs:
           project-version: ${{ steps.current-version.outputs.version }}
           # Read Godot version from the package we've included via submodules
           godot-version: src/global.json 
-          bump: ${{ inputs.bump }}
+          bump: ${{ inputs.bump || 'patch' }}
 
       - name: ✨ Print Next Version
         if: steps.changes.outputs.changed == 1
@@ -71,13 +78,29 @@ jobs:
           file: "Chickensoft.GodotPackageTemplate.csproj"
           version: ${{ steps.next-version.outputs.version }}
 
-      - name: '⤴️ Create Pull Request'
-        if: steps.changes.outputs.changed == 1
-        uses: peter-evans/create-pull-request@v4
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          branch: version/${{ steps.next-version.outputs.version }}
-          commit-message: update submodules and version to ${{ steps.next-version.outputs.version }}
-          title: 'chore(project): update version to ${{ steps.next-version.outputs.version }}'
-          body: >
-            chore(project): update submodules and version to ${{ steps.next-version.outputs.version }}.
+      - name: ✍️ Commit Changes
+        run: |
+          git config user.name "action@github.com"
+          git config user.email "GitHub Action"
+          git commit -a -m "chore(version): update version to ${{ steps.next-version.outputs.version }}"
+          git push
+
+      # To only open a pull request instead of committing directly to the repository, uncomment the following steps and comment out the step above.
+
+      # - name: '⤴️ Create Pull Request'
+      #   if: steps.changes.outputs.changed == 1
+      #   uses: peter-evans/create-pull-request@v4
+      #   with:
+      #     token: ${{ secrets.GITHUB_TOKEN }}
+      #     branch: version/${{ steps.next-version.outputs.version }}
+      #     commit-message: update submodules and version to ${{ steps.next-version.outputs.version }}
+      #     title: 'chore(project): update version to ${{ steps.next-version.outputs.version }}'
+      #     body: >
+      #       chore(project): update submodules and version to ${{ steps.next-version.outputs.version }}.
+
+  release:
+    uses: './.github/workflows/publish.yaml'
+    needs: self_update
+    if: needs.self_update.outputs.changed == 1
+    secrets:
+      NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}

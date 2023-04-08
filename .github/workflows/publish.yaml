@@ -2,6 +2,12 @@ name: '📦 Publish to Nuget'
 on:
   # You must manually run this if you want to publish a new version to nuget.
   workflow_dispatch:
+  # This can be automatically dispatched by self_update.yaml
+  workflow_call:
+    secrets:
+      NUGET_API_KEY:
+        description: "NuGet API Key"
+        required: true
 
 jobs:
   publish:
