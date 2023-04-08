@@ -59,7 +59,7 @@ jobs:
         uses: vers-one/dotnet-project-version-updater@v1.3
         with:
           file: "Chickensoft.GodotPackageTemplate.csproj"
-          version:  ${{ steps.next-version.outputs.version }}
+          version: ${{ steps.next-version.outputs.version }}
 
       - name: '⤴️ Create Pull Request'
         if: steps.changes.outputs.changed == 1
