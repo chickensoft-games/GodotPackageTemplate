@@ -22,8 +22,15 @@ jobs:
 
       - name: '👀 See If Anything Changed'
         id: changes
-        uses: UnicornGlobal/has-changes-action@v1.0.12
-      
+        run: |
+          if [[ $(git status --porcelain) ]]; then
+            echo "Detected changes in repository."
+            echo "changed=1" >> $GITHUB_OUTPUT
+          else
+            echo "No changes in repository."
+            echo "changed=0" >> $GITHUB_OUTPUT
+          fi
+
       - name: 🔎 Read Current Project Version
         if: steps.changes.outputs.changed == 1
         uses: KageKirin/get-csproj-version@v1.0.0
