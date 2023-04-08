@@ -104,3 +104,4 @@ jobs:
     if: needs.self_update.outputs.changed == 1
     secrets:
       NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+      GH_BASIC: ${{ secrets.GH_BASIC }}

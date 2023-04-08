@@ -8,6 +8,9 @@ on:
       NUGET_API_KEY:
         description: "NuGet API Key"
         required: true
+      GH_BASIC:
+        description: "GitHub Personal Access Token"
+        required: true
 
 jobs:
   publish:
