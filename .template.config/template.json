@@ -7,7 +7,6 @@
   ],
   "name": "Chickensoft Godot Package",
   "identity": "Chickensoft.GodotPackage",
-  "groupIdentity": "Chickensoft.Templates",
   "shortName": "chickenpackage",
   "tags": {
     "language": "C#",
