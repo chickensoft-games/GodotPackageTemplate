@@ -62,7 +62,7 @@ jobs:
       - name: ✨ Print Next Version
         if: steps.changes.outputs.changed == 1
         run: |
-          echo "Next Version: ${{ steps.next-version.outputs.version }}"
+          echo "Next Version: '${{ steps.next-version.outputs.version }}'"
 
       - name: 📝 Change Version
         if: steps.changes.outputs.changed == 1
