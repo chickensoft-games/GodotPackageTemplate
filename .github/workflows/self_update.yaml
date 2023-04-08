@@ -1,6 +1,16 @@
 name: '📩 Self-Update'
 on:
   workflow_dispatch:
+    inputs:
+      bump:
+        description: 'Bump type'
+        required: true
+        default: 'patch'
+        type: choice
+        options:
+          - 'major'
+          - 'minor'
+          - 'patch'
 
 jobs:
   self_update:
