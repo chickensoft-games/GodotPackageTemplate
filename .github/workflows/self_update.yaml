@@ -1,10 +1,6 @@
 name: '📩 Self-Update'
 on:
   workflow_dispatch:
-    inputs:
-      version:
-        description: "Version (no 'v' prefix)"
-        required: true
 
 jobs:
   self_update:
@@ -23,17 +19,43 @@ jobs:
         run: |
           git pull --recurse-submodules
           git submodule update --remote --recursive
-      
-      - name: '🖨 Print Version'
-        run: echo ${{ github.event.inputs.version }}
 
-      - name: '📝 Change Version'
-        uses: vers-one/dotnet-project-version-updater@v1.2
+      - name: '👀 See If Anything Changed'
+        id: changes
+        uses: UnicornGlobal/has-changes-action@v1.0.12
+      
+      - name: 🔎 Read Current Project Version
+        if: steps.changes.outputs.changed == 1
+        uses: KageKirin/get-csproj-version@v1.0.0
+        id: current-version
+        with:
+          file: Chickensoft.GodotPackageTemplate.csproj
+          xpath: /Project/PropertyGroup/Version
+
+      - name: 🧮 Compute Next Version
+        if: steps.changes.outputs.changed == 1
+        uses:  chickensoft-games/next-godot-csproj-version@v1
+        id: next-version
+        with:
+          project-version: ${{ steps.current-version.outputs.version }}
+          # Read Godot version from the package we've included via submodules
+          godot-version: src/global.json 
+          bump: ${{ inputs.bump }}
+
+      - name: ✨ Print Next Version
+        if: steps.changes.outputs.changed == 1
+        run: |
+          echo "Next Version: ${{ steps.next-version.outputs.version }}"
+
+      - name: 📝 Change Version
+        if: steps.changes.outputs.changed == 1
+        uses: vers-one/dotnet-project-version-updater@v1.3
         with:
           file: "Chickensoft.GodotPackageTemplate.csproj"
-          version: ${{ github.event.inputs.version }}
+          version:  ${{ steps.next-version.outputs.version }}
 
       - name: '⤴️ Create Pull Request'
+        if: steps.changes.outputs.changed == 1
         uses: peter-evans/create-pull-request@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
