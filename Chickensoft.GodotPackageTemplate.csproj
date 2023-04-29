@@ -13,7 +13,7 @@
     <PackageAuthor>Chickensoft</PackageAuthor>
 
     <Title>GodotPackage</Title>
-    <Version>1.4.3</Version>
+    <Version>1.4.4-godot4.0.3-rc.1</Version>
     <Description>A .NET template for quickly creating a C# nuget package for use with Godot 4.</Description>
     <Copyright>© 2023 Chickensoft</Copyright>
     <Company>Chickensoft</Company>
