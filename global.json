@@ -2,7 +2,7 @@
   "sdk": {
     "version": "6.0.406"
   },
-  "Godot.NET.Sdk": {
-    "version": "4.2.2"
+  "msbuild-sdks": {
+    "Godot.NET.Sdk": "4.2.2"
   }
 }
