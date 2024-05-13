@@ -75,7 +75,7 @@ jobs:
           find: "0.0.0-devbuild"
           replace: ${{ steps.next-version.outputs.version }}
           regex: false
-          include: Chickensoft.GodotPackage/Chickensoft.GodotPackage.csproj
+          include: Chickensoft.GodotPackageTemplate.csproj
 
       - name: 🛠️ Build
         run: dotnet build Chickensoft.GodotPackageTemplate.csproj -c Release
