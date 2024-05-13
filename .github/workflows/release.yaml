@@ -37,7 +37,7 @@ jobs:
           lfs: 'true'
           token: ${{ secrets.GH_BASIC }}
           ref: ${{ github.ref }}
-          fetch-tags: true
+          fetch-depth: 0
 
       - uses: actions/setup-dotnet@v3
         name: 💽 Setup .NET SDK
