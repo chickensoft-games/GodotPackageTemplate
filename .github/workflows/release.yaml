@@ -36,6 +36,8 @@ jobs:
           submodules: 'recursive'
           lfs: 'true'
           token: ${{ secrets.GH_BASIC }}
+          ref: ${{ github.ref }}
+          fetch-depth: 0 # So we can get all tags.
 
       - uses: actions/setup-dotnet@v3
         name: 💽 Setup .NET SDK
