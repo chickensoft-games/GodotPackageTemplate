@@ -1,0 +1,106 @@
+name: '📦 Publish to Nuget'
+on:
+  # Make a release whenever the developer wants.
+  workflow_dispatch:
+    inputs:
+      bump:
+        type: string
+        description: "major, minor, or patch"
+        required: true
+        default: "patch"
+  # Make a release whenever we're told to by another workflow.
+  workflow_call:
+    secrets:
+      NUGET_API_KEY:
+        description: "API key for Nuget"
+        required: true
+      GH_BASIC:
+        description: "Personal access token (PAT) for GitHub"
+        required: true
+    # Input unifies with the workflow dispatch since it's identical.
+    inputs:
+      bump:
+        type: string
+        description: "major, minor, or patch"
+        required: true
+        default: "patch"
+
+jobs:
+  publish:
+    name: '📦 Publish to Nuget'
+    runs-on: ubuntu-latest
+    steps:
+      - name: '🧾 Checkout'
+        uses: actions/checkout@v3
+        with:
+          submodules: 'recursive'
+          lfs: 'true'
+          token: ${{ secrets.GH_BASIC }}
+          ref: ${{ github.ref }}
+
+      - uses: actions/setup-dotnet@v3
+        name: 💽 Setup .NET SDK
+        with:
+          # Use the .NET SDK from global.json in the root of the repository.
+          global-json-file: global.json
+
+      - name: 🔎 Read Current Project Version
+        id: current-version
+        uses: WyriHaximus/github-action-get-previous-tag@v1
+        with:
+          fallback: "0.0.0-devbuild"
+
+      - name: 🖨 Print Current Version
+        run: |
+          echo "Current Version: ${{ steps.current-version.outputs.tag }}"
+
+      - name: 🧮 Compute Next Version
+        uses: chickensoft-games/next-godot-csproj-version@v1
+        id: next-version
+        with:
+          project-version: ${{ steps.current-version.outputs.tag }}
+          godot-version: global.json
+          bump: ${{ inputs.bump }}
+
+      - uses: actions/setup-dotnet@v4
+        name: 💽 Setup .NET SDK
+        with:
+          # Use the .NET SDK from global.json in the root of the repository.
+          global-json-file: global.json
+
+      # Write version to file so .NET will build correct version.
+      - name: 📝 Write Version to File
+        uses: jacobtomlinson/gha-find-replace@v3
+        with:
+          find: "0.0.0-devbuild"
+          replace: ${{ steps.next-version.outputs.version }}
+          regex: false
+          include: Chickensoft.GodotPackage/Chickensoft.GodotPackage.csproj
+
+      - name: 🛠️ Build
+        run: dotnet build Chickensoft.GodotPackageTemplate.csproj -c Release
+
+      - name: 🔎 Get Package Path
+        id: package-path
+        run: |
+          package=$(find . -name "Chickensoft.GodotPackage.*.nupkg")
+          echo "package=$package" >> "$GITHUB_OUTPUT"
+          echo "📦 Found package: $package"
+
+      - name: ✨ Create Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_BASIC }}
+        run: |
+          version="${{ steps.next-version.outputs.version }}"
+          gh release create --title "v$version" --generate-notes "$version" \
+            "${{ steps.package-path.outputs.package }}"
+      
+      - name: 📦 Publish
+        id: publish_nuget
+        run: |                    
+          echo "📦 Publishing package: ${{ steps.package-path.outputs.package }}"
+          
+          # publish the nuget package
+          dotnet nuget push "${{ steps.package-path.outputs.package }}" \
+            --api-key ${{ secrets.NUGET_API_KEY }}  \
+            --source https://api.nuget.org/v3/index.json --skip-duplicate
