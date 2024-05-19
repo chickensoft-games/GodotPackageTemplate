@@ -48,7 +48,7 @@ jobs:
       - name: 🔎 Read Latest Project Version
         id: current-version
         run: |
-          echo "tag=$(git tag --sort=committerdate | tail -1`)" >> "$GITHUB_OUTPUT"
+          echo "tag=$(git tag --sort=committerdate | tail -1)" >> "$GITHUB_OUTPUT"
 
       - name: 🖨 Print Current Version
         run: |
