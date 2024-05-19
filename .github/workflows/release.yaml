@@ -45,10 +45,10 @@ jobs:
           # Use the .NET SDK from global.json in the root of the repository.
           global-json-file: global.json
 
-      - name: 🔎 Read Current Project Version
+      - name: 🔎 Read Latest Project Version
         id: current-version
         run: |
-          echo "tag=$(git describe --tags `git rev-list --tags --max-count=1`)" >> "$GITHUB_OUTPUT"
+          echo "tag=$(git tag --sort=committerdate | tail -1`)" >> "$GITHUB_OUTPUT"
 
       - name: 🖨 Print Current Version
         run: |

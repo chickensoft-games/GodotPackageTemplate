@@ -1,7 +1,9 @@
 name: '📩 Self-Update'
 on:
+  # Allow developer to trigger an automatic self-update, if needed.
+  workflow_dispatch:
+  # Once a day, check to see if there have been changes to the template project.
   schedule:
-    # See if there are changes to release once-per-day.
     # Since our package template updates automatically, this ensures it will
     # never be unreleased for more than a day.
     - cron: 0 0 * * * # end of every day
