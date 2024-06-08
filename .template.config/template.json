@@ -38,6 +38,25 @@
       "generator": "guid",
       "format": "D",
       "replaces": "00000000-0000-0000-0000-000000000003"
+    },
+    "solutionName": {
+      "type": "generated",
+      "generator": "join",
+      "parameters": {
+        "symbols": [
+          {
+            "type": "ref",
+            "value": "name"
+          },
+          {
+            "type": "const",
+            "value": ".sln"
+          }
+        ],
+        "separator": "",
+        "removeEmptyValues": true
+      },
+      "replaces": "Chickensoft.GodotPackage.sln"
     }
   },
   "sources": [
