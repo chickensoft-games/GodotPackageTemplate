@@ -39,6 +39,13 @@ jobs:
             echo "No changes in repository."
             echo "changed=0" >> $GITHUB_OUTPUT
           fi
+      - name: ✍️ Commit Changes
+        if: steps.changes.outputs.changed == 1
+        run: |
+          git config user.name "action@github.com"
+          git config user.email "GitHub Action"
+          git commit -a -m "chore(version): update submodules"
+          git push
 
   release:
     uses: './.github/workflows/release.yaml'
