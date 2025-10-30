@@ -1,12 +1,21 @@
 name: '📩 Self-Update'
 on:
-  # Allow developer to trigger an automatic self-update, if needed.
-  workflow_dispatch:
   # Once a day, check to see if there have been changes to the template project.
   schedule:
     # Since our package template updates automatically, this ensures it will
     # never be unreleased for more than a day.
     - cron: 0 0 * * * # end of every day
+  workflow_dispatch:
+    inputs:
+      bump:
+        description: 'Bump type'
+        required: true
+        default: 'patch'
+        type: choice
+        options:
+          - 'major'
+          - 'minor'
+          - 'patch'
 
 jobs:
   self_update:
@@ -55,4 +64,4 @@ jobs:
       NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
       GH_BASIC: ${{ secrets.GH_BASIC }}
     with:
-      bump: patch
+      bump: ${{ inputs.bump || 'patch' }}
